@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { YouTubeSearchResult } from "@/types/youtube";
 
 export default function Home() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<YouTubeSearchResult[]>([]);
   const [loading, setLoading] = useState(false);
 
   const search = async () => {

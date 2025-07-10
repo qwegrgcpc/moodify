@@ -42,7 +42,7 @@ export interface YouTubeSearchListResponse {
    * 符合搜尋條件的結果清單 (陣列)。
    * 陣列中每個物件的型別為 YouTubeSearchResult。
    */
-  items: YouTubeSearchResult[];
+  items: YouTubeSearchItem[];
 }
 
 /**
@@ -61,7 +61,7 @@ interface PageInfo {
   resultsPerPage: number;
 }
 
-export interface YouTubeSearchResult {
+export interface YouTubeSearchItem {
   kind: string;
   etag: string;
   id: {
@@ -82,4 +82,12 @@ export interface YouTubeSearchResult {
     liveBroadcastContent: string;
     publishTime: string;
   };
+}
+
+export interface YouTubeSearchResult {
+  id: string; // 影片 ID
+  title: string; // 影片標題
+  channel: string; // 頻影片名稱
+  thumbnail?: string; // 縮圖 URL (可選)
+  url: string; // 影片 URL
 }
