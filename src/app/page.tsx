@@ -1,7 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import { YouTubeSearchResult } from "@/types/youtube";
+import Tabs from "@/components/Tabs";
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -23,6 +23,7 @@ export default function Home() {
   return (
     <div className="p-6 max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">🎶 依文字產生播放清單</h1>
+      <Tabs />
       <input
         type="text"
         placeholder="輸入一句話..."

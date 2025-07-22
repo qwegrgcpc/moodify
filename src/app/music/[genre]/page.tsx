@@ -1,16 +1,25 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { YouTubeSearchResult } from "@/types/youtube";
 import InputWithAI from "@/components/InputWithAI";
 
-export default function LoFiPage() {
+type Params = {
+  genre: string;
+};
+
+export default function MusicPage({ params }: { params: Promise<Params> }) {
+  const { genre } = use(params);
   const [results, setResults] = useState<YouTubeSearchResult[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchVideos = async (q: string = "lofi chill") => {
+  const fetchVideos = async (q: string = genre) => {
+
     setLoading(true);
-    const res = await fetch(`/api/lofi?q=${encodeURIComponent(q)}`);
+    const res = await fetch('/api/youtube', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query : `${genre} ${q}` })
+    })
     const data = await res.json();
     setResults(data.videos);
     setLoading(false);
@@ -22,7 +31,7 @@ export default function LoFiPage() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold mb-6">🎧 Lo-fi 音樂牆</h1>
+      <h1 className="text-3xl font-bold mb-6">🎧 {genre} 音樂牆</h1>
       <InputWithAI onSearch={fetchVideos} />
       {loading ? (
         <p>載入中...</p>
