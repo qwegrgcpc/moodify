@@ -2,6 +2,7 @@
 import { useEffect, useState, use } from "react";
 import { YouTubeSearchResult } from "@/types/youtube";
 import InputWithAI from "@/components/InputWithAI";
+import MusicCard from "@/components/MusicCard";
 
 type Params = {
   genre: string;
@@ -18,7 +19,7 @@ export default function MusicPage({ params }: { params: Promise<Params> }) {
     const res = await fetch('/api/youtube', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query : `${genre} ${q}` })
+      body: JSON.stringify({ query: `${genre} ${q}` })
     })
     const data = await res.json();
     setResults(data.videos);
@@ -38,21 +39,7 @@ export default function MusicPage({ params }: { params: Promise<Params> }) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {results.map((video) => (
-            <div
-              key={video.id}
-              className="bg-gray-800 p-4 rounded-lg shadow-lg"
-            >
-              <p className="font-semibold text-lg">{video.title}</p>
-              <p className="text-sm text-gray-400 mb-2">{video.channel}</p>
-              <iframe
-                className="w-full rounded"
-                height="200"
-                src={`https://www.youtube.com/embed/${video.id}`}
-                frameBorder="0"
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <MusicCard key={video.id} video={video} />
           ))}
         </div>
       )}

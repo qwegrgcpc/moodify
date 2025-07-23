@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { YouTubeSearchResult } from "@/types/youtube";
 import Tabs from "@/components/Tabs";
+import MusicCard from "@/components/MusicCard";
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -40,19 +41,7 @@ export default function Home() {
 
       <div className="mt-6 space-y-4">
         {results.map((video) => (
-          <div key={video.id} className="border p-3 rounded">
-            <p className="font-semibold">{video.title}</p>
-            <p className="text-sm text-gray-500">{video.channel}</p>
-            <iframe
-              className="mt-2"
-              width="100%"
-              height="180"
-              src={`https://www.youtube.com/embed/${video.id}`}
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-            ></iframe>
-          </div>
+          <MusicCard key={video.id} video={video} />
         ))}
       </div>
     </div>
