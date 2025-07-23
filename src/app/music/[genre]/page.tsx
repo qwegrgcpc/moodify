@@ -31,7 +31,7 @@ export default function MusicPage({ params }: { params: Promise<Params> }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
+    <div className="min-h-screen p-6">
       <h1 className="text-3xl font-bold mb-6">🎧 {genre} 音樂牆</h1>
       <InputWithAI onSearch={fetchVideos} />
       {loading ? (

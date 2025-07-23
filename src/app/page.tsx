@@ -23,11 +23,12 @@ export default function Home() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">🎶 依文字產生播放清單</h1>
+      <h1 className="text-2xl font-bold mb-6">🎶 選擇曲風建立音樂牆</h1>
       <Tabs />
+      <h1 className="text-2xl font-bold mb-4">🎶 依關鍵字進行搜尋</h1>
       <input
         type="text"
-        placeholder="輸入一句話..."
+        placeholder="輸入關鍵字"
         className="w-full p-2 border rounded mb-4"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
