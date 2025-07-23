@@ -2,7 +2,13 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 
-const genres = ["lofi", "jazz", "chill", "ambient"]
+const genres = [
+  { label: "Lo-fi", value: "lofi" },
+  { label: "Jazz", value: "jazz" },
+  { label: "Chillhop", value: "chillhop" },
+  { label: "Beats", value: "beats" },
+  { label: "Dream Pop", value: "dream-pop" },
+];
 
 export default function Tabs() {
   const router = useRouter()
@@ -14,16 +20,15 @@ export default function Tabs() {
   }
 
   return (
-    <div className="flex space-x-3 mb-4">
+    <div className="flex gap-2 mb-6 flex-wrap">
       {genres.map((g) => (
         <button
-          key={g}
-          onClick={() => handleGenreClick(g)}
-          className={`px-4 py-2 rounded ${
-            genre === g ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
+          key={g.value}
+          onClick={() => handleGenreClick(g.value)}
+          className={`px-4 py-2 rounded border ${genre === g.value ? "bg-blue-500 text-white border-blue-500" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+            }`}
         >
-          {g}
+          {g.label}
         </button>
       ))}
     </div>
