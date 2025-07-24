@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   const res = await fetch(url);
   const data: YouTubeSearchListResponse = await res.json();
 
-  const videos = data.items.map((item: YouTubeSearchItem): YouTubeSearchResult => ({
+  const music = data.items.map((item: YouTubeSearchItem): YouTubeSearchResult => ({
     id: item.id.videoId,
     title: item.snippet.title,
     channel: item.snippet.channelTitle,

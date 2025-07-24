@@ -1,25 +1,12 @@
 "use client";
 import { useState } from "react";
-import { YouTubeSearchResult } from "@/types/youtube";
 import Tabs from "@/components/Tabs";
 import MusicCard from "@/components/MusicCard";
+import useYoutubeSearch from "@/hooks/useYoutubeSearch";
 
 export default function Home() {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState<YouTubeSearchResult[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const search = async () => {
-    setLoading(true);
-    const res = await fetch('/api/youtube', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query })
-    });
-    const data = await res.json();
-    setResults(data.videos);
-    setLoading(false);
-  };
+  const [query, setQuery] = useState("");
+  const { results, loading, fetchMusic } = useYoutubeSearch();
 
   return (
     <div className="p-6 max-w-xl mx-auto">
@@ -35,8 +22,10 @@ export default function Home() {
       />
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded"
-        onClick={search}
-      >搜尋</button>
+        onClick={() => fetchMusic(query)}
+      >
+        搜尋
+      </button>
 
       {loading && <p className="mt-4">載入中...</p>}
 

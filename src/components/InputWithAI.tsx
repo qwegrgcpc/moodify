@@ -3,8 +3,10 @@
 import { useState } from "react";
 
 export default function InputWithAI({
+  genre,
   onSearch,
 }: {
+  genre?: string;
   onSearch: (q: string) => void;
 }) {
   const [text, setText] = useState("");
@@ -23,7 +25,7 @@ export default function InputWithAI({
 
       const data = await res.json();
       if (data.keywords) {
-        onSearch(data.keywords);
+        onSearch(`${data.keywords} ${genre || ""}`.trim());
       }
     } catch (err) {
       alert(`AI 轉換失敗 ${err}`);
