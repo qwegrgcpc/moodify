@@ -20,5 +20,5 @@ export async function POST(req: Request) {
     url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
   }));
 
-  return NextResponse.json({ query, videos });
+  return NextResponse.json({ query, music });
 }
