@@ -14,7 +14,7 @@ export default function MusicPage({ params }: { params: Promise<Params> }) {
 
   useEffect(() => {
     fetchMusic(genre);
-  }, []);
+  }, [fetchMusic, genre]);
 
   return (
     <div className="min-h-screen p-6">
