@@ -1,42 +1,15 @@
 "use client";
-
 import { useState } from "react";
-import type { Content } from "@google/genai";
+import type { ApiResponse, AnalysisData } from "@/types/quiz";
 
-interface QuestionPayload {
-  type: "question";
-  data: {
-    question: string;
-    options: string[];
-  };
-  history: Content[];
-}
-
-interface AnalysisPayload {
-  type: "analysis";
-  data: {
-    keywords: string[];
-    reasoning: string;
-  };
-  history: Content[];
-}
-
-type ApiResponse = QuestionPayload | AnalysisPayload;
-
-// --- UI 元件 ---
 export default function QuizPage() {
-  // --- State 管理 ---
-  const [history, setHistory] = useState<Content[]>([]);
-  const [turn, setTurn] = useState(0);
+  const [history, setHistory] = useState<ApiResponse["history"]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
-  const [finalResult, setFinalResult] = useState<
-    AnalysisPayload["data"] | null
-  >(null);
+  const [finalResult, setFinalResult] = useState<AnalysisData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // --- API 溝通函式 ---
   const fetchNextStep = async (selectedAnswer: string | null) => {
     setIsLoading(true);
     setError(null);
@@ -48,9 +21,8 @@ export default function QuizPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          history: history,
+          history,
           answer: selectedAnswer,
-          turn: turn,
         }),
       });
 
@@ -61,51 +33,35 @@ export default function QuizPage() {
 
       const data: ApiResponse = await response.json();
 
-      // 更新對話歷史紀錄
       setHistory(data.history);
 
       if (data.type === "question") {
         setCurrentQuestion(data.data.question);
         setCurrentOptions(data.data.options);
-        setTurn((prev) => prev + 1);
       } else if (data.type === "analysis") {
         setFinalResult(data.data);
-        setCurrentQuestion(null); // 清空問題，準備顯示結果
+        setCurrentQuestion(null);
       }
     } catch (e: unknown) {
-      // 明確標記為 unknown
       let errorMessage = "發生了一個未知的錯誤";
-
+      
       if (e instanceof Error) {
         errorMessage = e.message;
       }
-
       setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // --- 事件處理函式 ---
-  const handleStartQuiz = () => {
-    fetchNextStep(null); // 傳入 null answer 來觸發第一個問題
-  };
-
-  const handleOptionSelect = (option: string) => {
-    // 選擇選項後，立刻觸發下一題
-    fetchNextStep(option);
-  };
-
   const handleReset = () => {
     setHistory([]);
-    setTurn(0);
     setCurrentQuestion(null);
     setCurrentOptions([]);
     setFinalResult(null);
     setError(null);
   };
 
-  // --- 渲染邏輯 ---
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -137,7 +93,7 @@ export default function QuizPage() {
           <h2 className="text-2xl font-bold text-purple-300 mb-4">分析結果</h2>
           <p className="text-gray-300 mb-6">{finalResult.reasoning}</p>
           <div className="flex flex-wrap gap-3 justify-center">
-            {finalResult.keywords.map((keyword, index) => (
+            {finalResult.keywords.map((keyword: string, index: number) => (
               <span
                 key={index}
                 className="bg-purple-500/50 text-purple-200 px-4 py-2 rounded-full text-sm font-medium"
@@ -170,7 +126,7 @@ export default function QuizPage() {
                   id={`option-${index}`}
                   name="quiz-option"
                   value={option}
-                  onChange={() => handleOptionSelect(option)}
+                  onChange={() => fetchNextStep(option)}
                   className="sr-only peer" // 隱藏原生 radio，使用 peer state
                 />
                 <label
@@ -194,7 +150,7 @@ export default function QuizPage() {
         </h1>
         <p className="text-gray-400 mb-8">讓 AI DJ Moo 為你找出命定曲風</p>
         <button
-          onClick={handleStartQuiz}
+          onClick={() => fetchNextStep(null)}
           className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition-transform duration-200 ease-in-out hover:scale-105 shadow-lg"
         >
           開始測驗
