@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { ApiResponse, AnalysisData } from "@/types/quiz";
+import Link from "next/link";
 
 export default function QuizPage() {
   const [history, setHistory] = useState<ApiResponse["history"]>([]);
@@ -87,27 +88,36 @@ export default function QuizPage() {
       );
     }
 
-    if (finalResult) {
+      if (finalResult) {
+        
+      const encodedKeywords = encodeURIComponent(finalResult.keywords.join(' '));
+      const musicPageUrl = `/music?genre=${encodedKeywords}`;
+
       return (
         <div className="text-center animate-fade-in">
           <h2 className="text-2xl font-bold text-purple-300 mb-4">分析結果</h2>
           <p className="text-gray-300 mb-6">{finalResult.reasoning}</p>
           <div className="flex flex-wrap gap-3 justify-center">
-            {finalResult.keywords.map((keyword: string, index: number) => (
-              <span
-                key={index}
-                className="bg-purple-500/50 text-purple-200 px-4 py-2 rounded-full text-sm font-medium"
-              >
+            {finalResult.keywords.map((keyword, index) => (
+              <span key={index} className="bg-purple-500/50 text-purple-200 px-4 py-2 rounded-full text-sm font-medium">
                 {keyword}
               </span>
             ))}
           </div>
-          <button
-            onClick={handleReset}
-            className="mt-8 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
-          >
-            再玩一次
-          </button>
+
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <Link href={musicPageUrl} passHref className="w-full">
+              <button className="w-full h-12 rounded-lg bg-purple-600 text-white font-bold transition-colors hover:bg-purple-700">
+                前往我的音樂牆
+              </button>
+            </Link>
+            <button 
+              onClick={handleReset} 
+              className="w-full h-12 rounded-lg bg-transparent border border-gray-600 text-gray-300 font-bold transition-colors hover:bg-gray-700 hover:border-gray-500"
+            >
+              再玩一次
+            </button>
+          </div>
         </div>
       );
     }
@@ -127,7 +137,7 @@ export default function QuizPage() {
                   name="quiz-option"
                   value={option}
                   onChange={() => fetchNextStep(option)}
-                  className="sr-only peer" // 隱藏原生 radio，使用 peer state
+                  className="sr-only peer"
                 />
                 <label
                   htmlFor={`option-${index}`}
