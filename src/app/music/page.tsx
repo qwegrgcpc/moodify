@@ -4,29 +4,8 @@ import { useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import MusicCard from "@/components/MusicCard";
 import useYoutubeSearch from "@/hooks/useYoutubeSearch";
-
-const SpinnerIcon = (props: React.ComponentProps<"svg">) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
-    <circle
-      className="opacity-25"
-      cx="12"
-      cy="12"
-      r="10"
-      stroke="currentColor"
-      strokeWidth="4"
-    ></circle>
-    <path
-      className="opacity-75"
-      fill="currentColor"
-      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-    ></path>
-  </svg>
-);
+import { SpinnerIcon, ArrowIcon } from "@/components/icons";
+import { Tags } from "@/components/Tags";
 
 function MusicSearchResult() {
   const searchParams = useSearchParams();
@@ -79,24 +58,13 @@ function MusicSearchResult() {
           onClick={() => router.push('/')} 
           className="p-2 rounded-full bg-slate-800/70 hover:bg-slate-700 transition-colors flex-shrink-0"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
+          <ArrowIcon className="w-6 h-6" />
         </button>
 
         <h2 className="text-xl font-bold text-gray-400 whitespace-nowrap">
           Mood:
         </h2>
-
-        {/* 標籤區域 */}
-        {genre && genre.split(' ').map((keyword, index) => (
-          <span 
-            key={index} 
-            className="bg-purple-500/80 text-purple-100 px-4 py-1.5 rounded-full text-base font-medium"
-          >
-            {keyword}
-          </span>
-        ))}
+        {genre && <Tags tags={genre.split(' ')} />}
       </div>
       {renderContent()}
     </div>

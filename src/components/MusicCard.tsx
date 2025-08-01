@@ -3,12 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { YouTubeSearchResult } from '@/types/youtube';
-
-const PlayIcon = (props: React.ComponentProps<"svg">) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M8 5v14l11-7z" />
-  </svg>
-);
+import { PlayIcon } from '@/components/icons';
 
 export default function MusicCard({ video }: { video: YouTubeSearchResult }) {
   const [isPlaying, setIsPlaying] = useState(false);
