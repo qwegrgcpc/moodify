@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import MusicCard from "@/components/MusicCard";
 import useYoutubeSearch from "@/hooks/useYoutubeSearch";
 import { SpinnerIcon, ArrowIcon } from "@/components/icons";
+import { Tags } from "@/components/Tags";
 
 function MusicSearchResult() {
   const searchParams = useSearchParams();
@@ -63,16 +64,7 @@ function MusicSearchResult() {
         <h2 className="text-xl font-bold text-gray-400 whitespace-nowrap">
           Mood:
         </h2>
-
-        {/* 標籤區域 */}
-        {genre && genre.split(' ').map((keyword, index) => (
-          <span 
-            key={index} 
-            className="bg-purple-500/80 text-purple-100 px-4 py-1.5 rounded-full text-base font-medium"
-          >
-            {keyword}
-          </span>
-        ))}
+        {genre && <Tags tags={genre.split(' ')} />}
       </div>
       {renderContent()}
     </div>
