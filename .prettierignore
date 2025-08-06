@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Cache directories
+.cache/
+.turbo/
+
+# Environment files
+.env*
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Config files that should not be formatted
+*.min.js
+*.min.css
