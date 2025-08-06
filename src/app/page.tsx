@@ -4,8 +4,7 @@ import Link from 'next/link';
 import InputWithAI from '@/components/InputWithAI';
 import FeatureCard from '@/components/FeatureCard';
 
-
-export default function HomePage() {;
+export default function HomePage() {
   return (
     <main className="min-h-screen w-full bg-gray-900 text-white flex flex-col items-center justify-center p-4 sm:p-8">
       <div className="text-center mb-16 animate-fade-in">
@@ -18,7 +17,6 @@ export default function HomePage() {;
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
-
         {/* --- 卡片 1: 心情直達 --- */}
         <FeatureCard
           title="心情直達"
@@ -26,7 +24,7 @@ export default function HomePage() {;
         >
           <InputWithAI />
         </FeatureCard>
-        
+
         {/* --- 卡片 2: 風格探測 --- */}
         <FeatureCard
           title="風格探測"

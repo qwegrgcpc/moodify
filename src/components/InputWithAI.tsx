@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { SpinnerIcon } from '@/components/icons';
 
 export default function InputWithAI() {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -15,9 +15,9 @@ export default function InputWithAI() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/ai/keywords", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/ai/keywords', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ input: text }),
       });
 
@@ -31,7 +31,7 @@ export default function InputWithAI() {
         router.push(`/music?genre=${encodeURIComponent(data.keywords)}`);
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "發生未知錯誤";
+      const message = err instanceof Error ? err.message : '發生未知錯誤';
       alert(`AI 轉換失敗: ${message}`);
     } finally {
       setLoading(false);
@@ -47,7 +47,9 @@ export default function InputWithAI() {
           className="w-full h-14 rounded-lg border border-gray-600 bg-gray-700/50 py-2 px-4 text-white placeholder-gray-500 transition-all duration-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50 focus:outline-none disabled:opacity-50"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleClick(); }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') handleClick();
+          }}
           disabled={loading}
         />
       </div>
@@ -63,7 +65,7 @@ export default function InputWithAI() {
             分析中...
           </>
         ) : (
-          "轉換心情為旋律"
+          '轉換心情為旋律'
         )}
       </button>
     </div>

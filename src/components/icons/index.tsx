@@ -1,4 +1,4 @@
-const SpinnerIcon = (props: React.ComponentProps<"svg">) => (
+const SpinnerIcon = (props: React.ComponentProps<'svg'>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -21,13 +21,13 @@ const SpinnerIcon = (props: React.ComponentProps<"svg">) => (
   </svg>
 );
 
-const PlayIcon = (props: React.ComponentProps<"svg">) => (
+const PlayIcon = (props: React.ComponentProps<'svg'>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M8 5v14l11-7z" />
   </svg>
 );
 
-const ArrowIcon = (props: React.ComponentProps<"svg">) => (
+const ArrowIcon = (props: React.ComponentProps<'svg'>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"

@@ -1,7 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { NextRequest, NextResponse } from 'next/server';
-import type { ApiResponse } from "@/types/quiz";
-
+import type { ApiResponse } from '@/types/quiz';
 
 const SYSTEM_PROMPT = `你是一位專業的音樂策展 AI，名叫 DJ Moo。你的任務是透過 4-6 個選擇題，引導使用者找出最適合他們當下情境的音樂曲風。
 
@@ -19,54 +18,54 @@ const SYSTEM_PROMPT = `你是一位專業的音樂策展 AI，名叫 DJ Moo。�
 `;
 
 export async function POST(req: NextRequest) {
-    try {
-        const { history = [], answer } = await req.json();
+  try {
+    const { history = [], answer } = await req.json();
 
-        const ai = new GoogleGenAI({
-            apiKey: process.env.GOOGLE_API_KEY!,
-        });
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GOOGLE_API_KEY!,
+    });
 
-        const chatHistory: ApiResponse["history"] = history.length > 0 ? history : [
-            { role: 'user', parts: [{ text: SYSTEM_PROMPT }] }
-        ];
+    const chatHistory: ApiResponse['history'] =
+      history.length > 0
+        ? history
+        : [{ role: 'user', parts: [{ text: SYSTEM_PROMPT }] }];
 
-        const chat = ai.chats.create({
-            model: 'gemini-2.0-flash-lite',
-            history: chatHistory,
-        });
+    const chat = ai.chats.create({
+      model: 'gemini-2.0-flash-lite',
+      history: chatHistory,
+    });
 
-        // 透過計算 history 中 role 是 'model' 的數量來確定目前的提問次數
-        const turn = chatHistory.filter(msg => msg.role === 'model').length;
+    // 透過計算 history 中 role 是 'model' 的數量來確定目前的提問次數
+    const turn = chatHistory.filter((msg) => msg.role === 'model').length;
 
-        let userMessage: string
-        if (!answer) {
-            userMessage = "開始你的第一個提問";
-        } else if (turn >= 4) {
-            userMessage = `我最後的選擇是「${answer}」。請根據我們所有的對話，為我分析結果。`;
-        } else {
-            userMessage = answer;
-        }
-
-        const result = await chat.sendMessage({
-            message: userMessage,
-        });
-
-        // 移除 markdown 標記
-        const aiResponseText = result?.text?.replace(/```json|```/g, '').trim();;
-        if (typeof aiResponseText !== 'string') {
-            throw new Error('AI 回應內容為空或格式錯誤');
-        }
-
-        const responseJson = JSON.parse(aiResponseText);
-        const updatedHistory = chat.getHistory();
-
-        return NextResponse.json({ ...responseJson, history: updatedHistory });
-
-    } catch (err) {
-        console.error("Gemini API 錯誤:", err);
-        return NextResponse.json(
-            { error: 'Gemini API 發生錯誤', detail: String(err) },
-            { status: 500 }
-        );
+    let userMessage: string;
+    if (!answer) {
+      userMessage = '開始你的第一個提問';
+    } else if (turn >= 4) {
+      userMessage = `我最後的選擇是「${answer}」。請根據我們所有的對話，為我分析結果。`;
+    } else {
+      userMessage = answer;
     }
+
+    const result = await chat.sendMessage({
+      message: userMessage,
+    });
+
+    // 移除 markdown 標記
+    const aiResponseText = result?.text?.replace(/```json|```/g, '').trim();
+    if (typeof aiResponseText !== 'string') {
+      throw new Error('AI 回應內容為空或格式錯誤');
+    }
+
+    const responseJson = JSON.parse(aiResponseText);
+    const updatedHistory = chat.getHistory();
+
+    return NextResponse.json({ ...responseJson, history: updatedHistory });
+  } catch (err) {
+    console.error('Gemini API 錯誤:', err);
+    return NextResponse.json(
+      { error: 'Gemini API 發生錯誤', detail: String(err) },
+      { status: 500 }
+    );
+  }
 }

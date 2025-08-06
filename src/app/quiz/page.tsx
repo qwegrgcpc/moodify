@@ -1,11 +1,11 @@
-"use client";
-import { useState } from "react";
-import type { ApiResponse, AnalysisData } from "@/types/quiz";
-import Link from "next/link";
-import { Tags } from "@/components/Tags";
+'use client';
+import { useState } from 'react';
+import type { ApiResponse, AnalysisData } from '@/types/quiz';
+import Link from 'next/link';
+import { Tags } from '@/components/Tags';
 
 export default function QuizPage() {
-  const [history, setHistory] = useState<ApiResponse["history"]>([]);
+  const [history, setHistory] = useState<ApiResponse['history']>([]);
   const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
   const [finalResult, setFinalResult] = useState<AnalysisData | null>(null);
@@ -17,10 +17,10 @@ export default function QuizPage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/ai/quiz", {
-        method: "POST",
+      const response = await fetch('/api/ai/quiz', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           history,
@@ -30,23 +30,23 @@ export default function QuizPage() {
 
       if (!response.ok) {
         const errData = await response.json();
-        throw new Error(errData.detail || "API 請求失敗");
+        throw new Error(errData.detail || 'API 請求失敗');
       }
 
       const data: ApiResponse = await response.json();
 
       setHistory(data.history);
 
-      if (data.type === "question") {
+      if (data.type === 'question') {
         setCurrentQuestion(data.data.question);
         setCurrentOptions(data.data.options);
-      } else if (data.type === "analysis") {
+      } else if (data.type === 'analysis') {
         setFinalResult(data.data);
         setCurrentQuestion(null);
       }
     } catch (e: unknown) {
-      let errorMessage = "發生了一個未知的錯誤";
-      
+      let errorMessage = '發生了一個未知的錯誤';
+
       if (e instanceof Error) {
         errorMessage = e.message;
       }
@@ -89,9 +89,10 @@ export default function QuizPage() {
       );
     }
 
-      if (finalResult) {
-        
-      const encodedKeywords = encodeURIComponent(finalResult.keywords.join(' '));
+    if (finalResult) {
+      const encodedKeywords = encodeURIComponent(
+        finalResult.keywords.join(' ')
+      );
       const musicPageUrl = `/music?genre=${encodedKeywords}`;
 
       return (
@@ -108,8 +109,8 @@ export default function QuizPage() {
                 前往我的音樂牆
               </button>
             </Link>
-            <button 
-              onClick={handleReset} 
+            <button
+              onClick={handleReset}
               className="w-full h-12 rounded-lg bg-transparent border border-gray-600 text-gray-300 font-bold transition-colors hover:bg-gray-700 hover:border-gray-500"
             >
               再玩一次

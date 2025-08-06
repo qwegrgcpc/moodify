@@ -1,4 +1,4 @@
-import type { Content } from "@google/genai";
+import type { Content } from '@google/genai';
 
 interface BaseApiResponse {
   history: Content[];
@@ -16,13 +16,14 @@ export interface AnalysisData {
   reasoning: string;
 }
 
-export type ApiResponse = BaseApiResponse & (
-  | {
-      type: "question";
-      data: QuestionData;
-    }
-  | {
-      type: "analysis";
-      data: AnalysisData;
-    }
-);
+export type ApiResponse = BaseApiResponse &
+  (
+    | {
+        type: 'question';
+        data: QuestionData;
+      }
+    | {
+        type: 'analysis';
+        data: AnalysisData;
+      }
+  );

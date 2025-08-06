@@ -26,6 +26,9 @@ export async function POST(req: NextRequest) {
     const text = result.text;
     return NextResponse.json({ keywords: text });
   } catch (err) {
-    return NextResponse.json({ error: 'Gemini API 錯誤', detail: String(err) }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Gemini API 錯誤', detail: String(err) },
+      { status: 500 }
+    );
   }
 }

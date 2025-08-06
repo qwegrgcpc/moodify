@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 export default function LoginButton() {
   const { data: session } = useSession();
@@ -18,7 +18,7 @@ export default function LoginButton() {
 
   return (
     <button
-      onClick={() => signIn("spotify")}
+      onClick={() => signIn('spotify')}
       className="text-sm text-green-700 underline"
     >
       使用 Spotify 登入
